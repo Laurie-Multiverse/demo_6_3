@@ -38,6 +38,22 @@ describe('Collector and Deck Models', () => {
         expect(foundDeck[0].title).toBe(seedDeck[0].title);
     });
 
+    /*
+         cruD - test Update
+    */
+    test("can change a Collector's budget", async () => {
+        const collector = await Collector.create(seedCollector[1]);
+        expect(collector.budget).toBe(seedCollector[1].budget);
+        await Collector.update(
+            { budget : 30 },
+            { where: { name: seedCollector[1].name} }    
+        )
+        const [ updatedCollector ] = await Collector.findAll(
+            {where: {name: seedCollector[1].name}}
+        );
+        expect(updatedCollector.budget).toBe(30);
+    });
+    
     test('can delete Collectors', async () => {
         const foundDeck = await Deck.findAll();
         const deletedDeck = await foundDeck[0].destroy();
